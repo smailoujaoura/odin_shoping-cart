@@ -25,6 +25,16 @@ function App() {
     });
   }
 
+  function adjustQty(id, delta) {
+    console.table(cart);
+    console.log(id, delta);
+    setCart(prevCart => 
+      prevCart
+        .map(prod => prod.id === id ? { ...prod, qty: (prod.qty || 1) + delta } : prod)
+        .filter(prod => prod.qty > 0)
+      )
+    };
+
   useEffect(() => {
     fetch("https://fakestoreapi.com/products?limit=20", {mode: "cors"})
       .then((response) => {
@@ -44,7 +54,7 @@ function App() {
         cart={cart}
       />
       <Outlet 
-        context={{products, loading, error, cart, onAddToCart}}
+        context={{products, loading, error, cart, onAddToCart, adjustQty}}
       />
     </div>
   )
